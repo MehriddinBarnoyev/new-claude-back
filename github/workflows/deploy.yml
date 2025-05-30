@@ -1,0 +1,28 @@
+name: 🚀 Deploy to EC2 via SSH
+
+on:
+  push:
+    branches:
+      - main  # Har safar main branchga push bo'lsa
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ec2-user@ec2-54-146-131-136.compute-1.amazonaws.com << 'EOF'
+            cd ~/claude_back
+            git pull origin main
+            npm install
+            pm2 restart all
+          EOF
