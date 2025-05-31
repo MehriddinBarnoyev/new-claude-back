@@ -5,7 +5,7 @@ const app = express();
 const PORT = 3000;
 const DB_FILE = __dirname + '/db.json';
 
-app.use(cors());
+app.use(cors({origin: '*'}));
 app.use(express.json());
 
 // Ma'lumotlarni o'qish
@@ -13,12 +13,10 @@ function readTasks() {
   return fs.readJson(DB_FILE).catch(() => []);
 }
 
-// Ma'lumotlarni saqlash
 function writeTasks(tasks) {
   return fs.writeJson(DB_FILE, tasks);
 }
 
-// Barcha vazifalarni olish
 app.get('/tasks', async (req, res) => {
   const tasks = await readTasks();
   res.json(tasks);
