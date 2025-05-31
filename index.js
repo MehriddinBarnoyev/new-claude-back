@@ -6,10 +6,11 @@ const PORT = 3000;
 const DB_FILE = __dirname + '/db.json';
 
 app.use(cors({
-  origin: ['https://main.dk4r0np7ptej8.amplifyapp.com', 'http://127.0.0.1:5500/index.html'],
+  origin: ['https://main.dk4r0np7ptej8.amplifyapp.com', 'http://127.0.0.1:5500'],
   methods: ['GET', 'POST', 'DELETE'],
-  credentials: true
+  credentials: false // credentials true faqat kerak bo‘lsa qo‘sh
 }));
+
 
 app.use(express.json());
 
