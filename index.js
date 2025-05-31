@@ -13,7 +13,7 @@ app.use(cors({
 
 
 app.use(express.json());
-
+// sdf
 // Ma'lumotlarni o'qish
 function readTasks() {
   return fs.readJson(DB_FILE).catch(() => []);
