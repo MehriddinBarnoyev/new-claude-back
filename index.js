@@ -28,6 +28,8 @@ app.post('/tasks', async (req, res) => {
   const newTask = { id: Date.now(), text: req.body.text };
   tasks.push(newTask);
   await writeTasks(tasks);
+  console.log(`New task added: ${newTask.text}`);
+  
   res.json(newTask);
 });
 
