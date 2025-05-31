@@ -1,28 +1,33 @@
-name: 🚀 Deploy to EC2 via SSH
-
+name: Backend Deployment Pipeline
 on:
   push:
     branches:
-      - main  # Har safar main branchga push bo'lsa
-
+      - main
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Add SSH key
-        uses: webfactory/ssh-agent@v0.5.4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
-
+          node-version: '20.8.1'
+      - name: Install dependencies
+        run: npm install
+      - name: Build project
+        run: npm run build
       - name: Deploy to EC2
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_KEY: ${{ secrets.EC2_KEY }}
         run: |
-          ssh -o StrictHostKeyChecking=no ec2-user@ec2-54-146-131-136.compute-1.amazonaws.com << 'EOF'
-            cd ~/claude_back
+          echo "${EC2_KEY}" > key.pem
+          chmod 400 key.pem
+          ssh -o StrictHostKeyChecking=no -i key.pem ${EC2_USER}@${EC2_HOST} << 'EOF'
+            cd ~/new-claude-back
             git pull origin main
             npm install
-            pm2 restart all
+            pm2 restart index
           EOF
