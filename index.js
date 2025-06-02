@@ -49,6 +49,6 @@ app.delete('/tasks/:id', async (req, res) => {
 });
 
 app.listen(PORT, '0.0.0.0',() => {
-  console.log(`Server is now running on http://localhost:${PORT}`);
-  console.log('Deployed! You can now access the API.Updated! second time.');
+  console.log(`Server is now running on port: ${PORT}`);
+  console.log('Deployed! You can now access the API.CI/CD');
 });
